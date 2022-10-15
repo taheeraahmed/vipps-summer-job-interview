@@ -9,7 +9,10 @@ export const getHighlightedText = (text, highlight) => {
           key={i}
           style={
             part.toLowerCase() === highlight.toLowerCase()
-              ? { fontWeight: "bold" }
+              ? {
+                  fontWeight: "bold",
+                  color: "#1976d2",
+                }
               : {}
           }
         >
