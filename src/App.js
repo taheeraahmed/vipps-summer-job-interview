@@ -14,6 +14,7 @@ function App() {
   const [err, setErr] = useState(false);
   const [count, setCount] = useState(0);
   const [confetti, setConfetti] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // For handling the input field button
   const handleClick = (event) => {
@@ -21,6 +22,7 @@ function App() {
   };
 
   useEffect(() => {
+    setLoading(false);
     setConfetti(true);
     setCount(countWords(data, word));
   }, [data]);
@@ -36,6 +38,7 @@ function App() {
 
   // For handling the API call
   useEffect(() => {
+    setLoading(true);
     wikiCount
       .get(word)
       .then((res) => {
@@ -54,32 +57,33 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="body">
         <h1>Write a word</h1>
-        <Card>
-          <TextField
-            label="Enter a word"
-            onChange={(e) => setTextFieldWord(e.target.value)}
-          />
-        </Card>
+        <TextField
+          label="Enter a word"
+          onChange={(e) => setTextFieldWord(e.target.value)}
+        />
         <Button onClick={(e) => handleClick(e)}>Search</Button>
-        {word ? (
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : word ? (
           <>
             {confetti ? (
               <Confetti width={window.innerWidth} height={window.innerHeight} />
             ) : null}
             <h3>The word you are searching for: {word}</h3>
+            {err ? <p>No match found</p> : <p>Word count: {count}</p>}
+            {data ? (
+              <div className="data">
+                <Card padding={1}>
+                  <p>{getHighlightedText(data, word)}</p>
+                </Card>
+              </div>
+            ) : null}
           </>
         ) : null}
-        {err ? <p>No match found</p> : <p>Word count: {count}</p>}
-        {data ? (
-          <div className="data">
-            <Card padding={1}>
-              <p>{getHighlightedText(data, word)}</p>
-            </Card>
-          </div>
-        ) : null}
-      </header>
+        <br />
+      </div>
     </div>
   );
 }
