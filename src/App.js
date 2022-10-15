@@ -1,22 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import { TextField } from "@mui/material";
+import { wikiCount } from "./api/wikiCount";
 
 function App() {
+  const [word, setWord] = useState("");
+
+  useEffect(() => {
+    wikiCount
+      .get(word)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [word]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Write a word</h1>
+        <TextField
+          onChange={(e) => setWord(e.target.value)}
+          label="Enter a word"
+        />
       </header>
     </div>
   );
