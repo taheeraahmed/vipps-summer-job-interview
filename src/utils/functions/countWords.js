@@ -9,6 +9,5 @@ export const countWords = (str, word) => {
   } else {
     count = 0;
   }
-  console.log(count);
   return count;
 };
