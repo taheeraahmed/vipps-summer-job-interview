@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Button, TextField } from "@mui/material";
 import { wikiCount } from "./api/wikiCount";
@@ -28,9 +28,12 @@ function App() {
   const [data, setData] = useState("");
   const [err, setErr] = useState(false);
   const [count, setCount] = useState(0);
+  const [confetti, setConfetti] = useState(false);
 
   const handleClick = (event) => {
     setWord(textFieldWord);
+    setConfetti(false);
+    setCount(0);
     wikiCount
       .get(word)
       .then((res) => {
@@ -39,6 +42,7 @@ function App() {
           setCount(0);
         } else {
           setErr(false);
+          setConfetti(true);
           setData(res.data.parse.text["*"]);
           setCount(countWords(data, word));
         }
@@ -59,7 +63,7 @@ function App() {
         <Button onClick={(e) => handleClick(e)}>Search</Button>
         {word ? (
           <>
-            <Confetti width={2000} height={2000} tweenDuration={300} />
+            <Confetti width={2000} height={2000} run={confetti} />
             <h3>The word you are searching for: {word}</h3>
           </>
         ) : null}
