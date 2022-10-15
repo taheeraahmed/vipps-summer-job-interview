@@ -1,26 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Button, TextField } from "@mui/material";
-import { wikiCount } from "./api/wikiCount";
+import { wikiCount } from "./utils/api/wikiCount";
 import Confetti from "react-confetti";
-
-const countWords = (data, word) => {
-  let str = data.toString();
-  // Remove styling
-  str = str.replace(/(<style[\w\W]+style>)/g, "");
-  // Remove HTML tags
-  str = str.replace(/<\/?[^>]+(>|$)/g, "");
-  console.log(str);
-  // Search for the word in the string
-  let count = str.match(new RegExp(word, "g"));
-  if (count) {
-    count = str.match(new RegExp(word, "g")).length;
-  } else {
-    count = 0;
-  }
-  console.log(count);
-  return count;
-};
+import { countWords } from "./utils/functions/countWords";
+import { getString } from "./utils/functions/getString";
 
 function App() {
   const [word, setWord] = useState("");
@@ -40,10 +24,11 @@ function App() {
         if (res.data.error) {
           setErr(true);
           setCount(0);
+          setData("");
         } else {
           setErr(false);
           setConfetti(true);
-          setData(res.data.parse.text["*"]);
+          setData(getString(res.data.parse.text["*"]));
           setCount(countWords(data, word));
         }
       })
@@ -68,6 +53,11 @@ function App() {
           </>
         ) : null}
         {err ? <p>No match found</p> : <p>Word count: {count}</p>}
+        {data ? (
+          <div className="data">
+            <p>{data}</p>
+          </div>
+        ) : null}
       </header>
     </div>
   );
