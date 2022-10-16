@@ -15,6 +15,7 @@ function App() {
   const [count, setCount] = useState(0);
   const [confetti, setConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchedTerms, setSearchedTerms] = useState([]);
 
   // For handling the input field button
   const handleClick = (event) => {
@@ -39,6 +40,7 @@ function App() {
   // For handling the API call
   useEffect(() => {
     setLoading(true);
+
     wikiCount
       .get(word)
       .then((res) => {
@@ -53,6 +55,8 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+    setSearchedTerms([...searchedTerms, textFieldWord]);
+    console.log(searchedTerms);
   }, [word]);
 
   return (
@@ -68,10 +72,11 @@ function App() {
           <h1>Loading...</h1>
         ) : word ? (
           <>
-            {confetti ? (
+            {confetti && !err ? (
               <Confetti width={window.innerWidth} height={window.innerHeight} />
             ) : null}
-            <h3>The word you are searching for: {word}</h3>
+            <h3>The word you are searching for</h3>
+            <h2>✨{word} ✨</h2>
             {err ? <p>No match found</p> : <p>Word count: {count}</p>}
             {data ? (
               <div className="data">
