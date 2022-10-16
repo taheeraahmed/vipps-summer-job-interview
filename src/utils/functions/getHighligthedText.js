@@ -1,24 +1,24 @@
+import { Chip, Typography } from "@mui/material";
+
 export const getHighlightedText = (text, highlight) => {
   // Split on highlight term and include term into parts, ignore case
   const parts = text.split(new RegExp(`(${highlight})`, "gi"));
   return (
-    <span>
+    <Typography>
       {" "}
-      {parts.map((part, i) => (
-        <span
-          key={i}
-          style={
-            part.toLowerCase() === highlight.toLowerCase()
-              ? {
-                  fontWeight: "bold",
-                  color: "#1976d2",
-                }
-              : {}
-          }
-        >
-          {part}
-        </span>
-      ))}{" "}
-    </span>
+      {parts.map((part, i) => {
+        if (part.toLowerCase() === highlight.toLowerCase()) {
+          return (
+            <Chip
+              key={i}
+              className="highlight"
+              label={part}
+            />
+          );
+        } else {
+          return part;
+        }
+      })}
+    </Typography>
   );
 };

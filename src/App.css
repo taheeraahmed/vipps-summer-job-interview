@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
+  margin-top: 10px;
 }
 
 .body {
@@ -22,7 +23,9 @@
 p {
   margin: 1rem;
 }
-
+h1 {
+  font-family: 'Roboto Mono', monospace;
+}
 h2 {
   margin: 1rem;
 }

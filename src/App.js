@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import "./App.css";
-import { Button, Card, TextField } from "@mui/material";
-import { wikiCount } from "./utils/api/wikiCount";
+import { Button, Paper, TextField, Typography } from "@mui/material";
+import { wikiApi } from "./utils/api/wikiApi";
 import Confetti from "react-confetti";
 import { countWords } from "./utils/functions/countWords";
 import { getString } from "./utils/functions/getString";
@@ -15,18 +15,18 @@ function App() {
   const [count, setCount] = useState(0);
   const [confetti, setConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchedTerms, setSearchedTerms] = useState([]);
 
   // For handling the input field button
   const handleClick = (event) => {
     setWord(textFieldWord);
   };
 
+  // For handling the data from the API
   useEffect(() => {
     setLoading(false);
     setConfetti(true);
     setCount(countWords(data, word));
-  }, [data]);
+  }, [data, word]);
 
   // For handling confetti
   useEffect(() => {
@@ -38,10 +38,10 @@ function App() {
   }, [confetti]);
 
   // For handling the API call
-  useEffect(() => {
+  useLayoutEffect(() => {
     setLoading(true);
 
-    wikiCount
+    wikiApi
       .get(word)
       .then((res) => {
         if (res.data.error) {
@@ -55,8 +55,6 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-    setSearchedTerms([...searchedTerms, textFieldWord]);
-    console.log(searchedTerms);
   }, [word]);
 
   return (
@@ -69,20 +67,26 @@ function App() {
         />
         <Button onClick={(e) => handleClick(e)}>Search</Button>
         {loading ? (
-          <h1>Loading...</h1>
+          <Typography variant="h1">Loading...</Typography>
         ) : word ? (
           <>
             {confetti && !err ? (
               <Confetti width={window.innerWidth} height={window.innerHeight} />
             ) : null}
-            <h3>The word you are searching for</h3>
-            <h2>✨{word} ✨</h2>
-            {err ? <p>No match found</p> : <p>Word count: {count}</p>}
-            {data ? (
+            <Typography variant="overline">
+              The word you are searching for
+            </Typography>
+            <Typography variant="h2">✨{word} ✨</Typography>
+            {err ? (
+              <Typography>No match found</Typography>
+            ) : (
+              <Typography variant="h3">Word count: {count}</Typography>
+            )}
+            {data && count > 0 ? (
               <div className="data">
-                <Card padding={1}>
-                  <p>{getHighlightedText(data, word)}</p>
-                </Card>
+                <Paper elevation={3} sx={{ padding: 5 }}>
+                  <Typography>{getHighlightedText(data, word)}</Typography>
+                </Paper>
               </div>
             ) : null}
           </>

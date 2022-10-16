@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-export const wikiCount = {
+export const wikiApi = {
   get: async function (word) {
     word = word.toLowerCase();
 
