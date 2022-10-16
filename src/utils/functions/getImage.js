@@ -1,7 +1,5 @@
-import React from "react";
-
 const getImage = (data) => {
-  const parts = data.split(new RegExp(`<img([\w\W]+?)/>`, "gi"));
+  const parts = data.split(new RegExp(`<img([]+?)/>`, "gi"));
   const images = parts.filter((part) => part.includes("src="));
   const image = images[0];
   const src = image.split("src=")[1];

@@ -58,7 +58,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, [word]);
+  }, [word, image]);
 
   return (
     <div className="App">
