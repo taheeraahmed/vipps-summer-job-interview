@@ -20,11 +20,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-p {
-  margin: 1rem;
-}
 h1 {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 h2 {
   margin: 1rem;
@@ -32,4 +29,15 @@ h2 {
 
 h3 {
   margin: 1rem;
+}
+
+img {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  float: left;
+  margin: 20px;
+}
+
+p {
+  text-align: justify;
+  font-size: 25px;
 }

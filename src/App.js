@@ -6,6 +6,7 @@ import Confetti from "react-confetti";
 import { countWords } from "./utils/functions/countWords";
 import { getString } from "./utils/functions/getString";
 import { getHighlightedText } from "./utils/functions/getHighligthedText";
+import getImage from "./utils/functions/getImage";
 
 function App() {
   const [word, setWord] = useState("");
@@ -15,6 +16,7 @@ function App() {
   const [count, setCount] = useState(0);
   const [confetti, setConfetti] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
 
   // For handling the input field button
   const handleClick = (event) => {
@@ -50,6 +52,7 @@ function App() {
         } else {
           setErr(false);
           setData(getString(res.data.parse.text["*"]));
+          setImage(getImage(res.data.parse.text["*"]));
         }
       })
       .catch((err) => {
@@ -73,10 +76,7 @@ function App() {
             {confetti && !err ? (
               <Confetti width={window.innerWidth} height={window.innerHeight} />
             ) : null}
-            <Typography variant="overline">
-              The word you are searching for
-            </Typography>
-            <Typography variant="h2">✨{word} ✨</Typography>
+
             {err ? (
               <Typography>No match found</Typography>
             ) : (
@@ -85,6 +85,10 @@ function App() {
             {data && count > 0 ? (
               <div className="data">
                 <Paper elevation={3} sx={{ padding: 5 }}>
+                  <Typography variant="h2">✨ {word} ✨</Typography>
+                  {image !== "" ? (
+                    <img src={image} alt="wiki" className="image" />
+                  ) : null}
                   <Typography>{getHighlightedText(data, word)}</Typography>
                 </Paper>
               </div>
